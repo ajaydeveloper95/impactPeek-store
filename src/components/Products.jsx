@@ -85,7 +85,7 @@ const Products = () => {
     if (!Array.isArray(filteredProducts) || filteredProducts.length === 0) {
       return <div className="text-center">No products available.</div>;
     }
-
+  
     return (
       <div className="row justify-content-center">
         {filteredProducts.map((product) => (
@@ -104,7 +104,7 @@ const Products = () => {
             >
               <img
                 className="card-img-top p-3"
-                src={product.image}
+                src={product.images?.[0] || product.image} // Use the first image in the array or fallback to `image`
                 alt={product.productName}
                 height={300}
                 style={{
@@ -133,7 +133,6 @@ const Products = () => {
                   style={{
                     fontSize: "0.9rem",
                     lineHeight: "1.5",
-                    // marginBottom: "15px",
                   }}
                 >
                   {product.description.substring(0, 90)}...
@@ -156,7 +155,6 @@ const Products = () => {
                   to={`/getproduct/${product._id}`}
                   className="btn btn-primary m-1"
                   style={{
-                    // padding: "10px 20px",
                     borderRadius: "8px",
                   }}
                 >
@@ -166,7 +164,6 @@ const Products = () => {
                   className="btn btn-outline-dark m-1"
                   onClick={() => addProduct(product)}
                   style={{
-                    // padding: "10px 20px",
                     borderRadius: "8px",
                   }}
                 >
@@ -179,6 +176,7 @@ const Products = () => {
       </div>
     );
   };
+  
 
   return (
     <div className="container my-4 py-4">

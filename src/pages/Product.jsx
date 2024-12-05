@@ -82,15 +82,28 @@ const Product = () => {
   const ShowProduct = () => (
     <div className="container my-5 py-2">
       <div className="row">
+        {/* Product Images */}
         <div className="col-md-6 col-sm-12 py-3">
-          <img
-            className="img-fluid"
-            src={product.image}
-            alt={product.productName}
-            width="400px"
-            height="400px"
-          />
+          {product.images && product.images.length > 0 ? (
+            <img
+              className="img-fluid"
+              src={product.images[0]} // Display the first image from the array
+              alt={product.productName}
+              width="400px"
+              height="400px"
+            />
+          ) : (
+            <img
+              className="img-fluid"
+              src="/path/to/placeholder-image.jpg" // Fallback if no images are available
+              alt="No image available"
+              width="400px"
+              height="400px"
+            />
+          )}
         </div>
+  
+        {/* Product Details */}
         <div className="col-md-6 col-sm-12 py-5">
           <h4 className="text-uppercase text-muted">{product.category}</h4>
           <h1 className="display-5">{product.productName}</h1>
@@ -112,6 +125,7 @@ const Product = () => {
       </div>
     </div>
   );
+  
 
   return (
     <>
