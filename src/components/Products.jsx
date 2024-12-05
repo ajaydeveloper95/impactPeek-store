@@ -12,10 +12,12 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 15;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const addProduct = (product) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -25,7 +27,6 @@ const Products = () => {
       navigate("/login");
     }
   };
-  
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,7 +36,6 @@ const Products = () => {
           "https://ajay.yunicare.in/api/product/getproducts"
         );
         if (response.status === 200) {
-          // Exclude Men's and Kids' Clothing categories
           const filtered = response.data.products.filter(
             (product) =>
               product.category.toLowerCase() !== "mensclothing" &&
@@ -57,7 +57,6 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    // Filter products based on search term
     if (searchTerm.trim() === "") {
       setFilteredProducts(products);
     } else {
@@ -67,6 +66,21 @@ const Products = () => {
       setFilteredProducts(filtered);
     }
   }, [searchTerm, products]);
+
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const currentProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
 
   const Loading = () => (
     <div className="row justify-content-center">
@@ -82,13 +96,13 @@ const Products = () => {
   );
 
   const ShowProducts = () => {
-    if (!Array.isArray(filteredProducts) || filteredProducts.length === 0) {
+    if (!Array.isArray(currentProducts) || currentProducts.length === 0) {
       return <div className="text-center">No products available.</div>;
     }
-  
+
     return (
       <div className="row justify-content-center">
-        {filteredProducts.map((product) => (
+        {currentProducts.map((product) => (
           <div
             key={product._id}
             className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4"
@@ -104,7 +118,7 @@ const Products = () => {
             >
               <img
                 className="card-img-top p-3"
-                src={product.images?.[0] || product.image} // Use the first image in the array or fallback to `image`
+                src={product.images?.[0] || product.image}
                 alt={product.productName}
                 height={300}
                 style={{
@@ -176,7 +190,6 @@ const Products = () => {
       </div>
     );
   };
-  
 
   return (
     <div className="container my-4 py-4">
@@ -218,6 +231,24 @@ const Products = () => {
         </div>
       </div>
       {loading ? <Loading /> : <ShowProducts />}
+      <div className="d-flex justify-content-between mt-4">
+        <button
+          className="btn btn-secondary"
+          onClick={handlePrevious}
+          disabled={currentPage === 1}
+          style={{ borderRadius: "8px", padding: "10px 20px" }}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+          style={{ borderRadius: "8px", padding: "10px 20px" }}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
