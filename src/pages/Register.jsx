@@ -5,10 +5,10 @@ import axios from 'axios';
 
 const Register = () => {
   const navigate = useNavigate(); // Initialize useNavigate
-
+ 
   const [formData, setFormData] = useState({
-    fName: '',
-    lName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     memberType: 'Admin',
@@ -30,13 +30,13 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://test.yunicare.in/apiAdmin/v1/user/addUser', formData);
+      const res = await axios.post('https://ajay.yunicare.in/api/auth/signUp', formData);
       setMessage('User registered successfully');
       setTimeout(() => navigate('/login'), 2000); // Navigate to /login after 2 seconds
     } catch (error) {
       // Handle duplicate email error specifically
       if (error.response && error.response.data.includes('duplicate key error')) {
-        setMessage('Email already exists. Please use a different email address.');
+        setMessage('email already exists. Please use a different email address.');
       } else {
         setMessage('Error registering user: ' + (error.response?.data || error.message));
       }
@@ -55,33 +55,33 @@ const Register = () => {
           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
             <form onSubmit={handleSubmit}>
               <div className="form my-3">
-                <label htmlFor="fName">First Name</label>
+                <label htmlFor="firstName">First Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="fName"
-                  name="fName"
-                  value={formData.fName}
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleChange}
                   placeholder="Enter Your First Name"
                   required
                 />
               </div>
               <div className="form my-3">
-                <label htmlFor="lName">Last Name</label>
+                <label htmlFor="lastName">Last Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="lName"
-                  name="lName"
-                  value={formData.lName}
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
                   onChange={handleChange}
                   placeholder="Enter Your Last Name"
                   required
                 />
               </div>
               <div className="form my-3">
-                <label htmlFor="Email">Email Address</label>
+                <label htmlFor="email">email Address</label>
                 <input
                   type="email"
                   className="form-control"

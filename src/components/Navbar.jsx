@@ -12,7 +12,7 @@ const Navbar = () => {
     const handleLogout = async () => {
         try {
             const token = localStorage.getItem('accessToken'); // Retrieve the token
-            await axios.get('https://test.yunicare.in/apiAdmin/v1/user/logout', {
+            await axios.post('https://ajay.yunicare.in/api/auth/logOut', {
                 headers: {
                     Authorization: `Bearer ${token}` // Include token in the headers
                 }
@@ -153,6 +153,25 @@ const Navbar = () => {
                                 }}
                             >
                                 Contact
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink
+                                className="nav-link"
+                                to="/orderdetail"
+                                style={{
+                                    fontSize: '1rem',
+                                    color: '#555',
+                                    padding: '0.5rem 1rem',
+                                    textTransform: 'uppercase',
+                                    fontWeight: '600',
+                                    transition: 'color 0.3s',
+                                }}
+                                activeStyle={{
+                                    color: '#f15b2a'
+                                }}
+                            >
+                                Order History
                             </NavLink>
                         </li>
                     </ul>

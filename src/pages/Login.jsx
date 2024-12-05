@@ -11,29 +11,51 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); 
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('https://test.yunicare.in/apiAdmin/v1/user/login', {
-        email,
-        password
-      });
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const res = await axios.post('http://localhost:5067/api/auth/logIn', {
+//         email,
+//         password
+//       });
+// console.log(res.data.accessToken)
+//       if (res.status === 200) {
+//         localStorage.setItem("accessToken", res.accessToken);
+//         // localStorage.setItem("refreshToken", res.data.refreshToken);
 
-      if (res.data.statusCode === 200) {
-        localStorage.setItem("accessToken", res.data.data.accessToken);
-        localStorage.setItem("refreshToken", res.data.data.refreshToken);
+//         toast.success("Login successful!");
 
-        toast.success("Login successful!");
+//         setTimeout(() => {
+//           navigate("/");
+//         }, 2000);
+//       }
+//     } catch (error) {
+//       setMessage(error.response?.data?.message || "Login failed. Please try again.");
+//       toast.error("Login failed!");
+//     }
+//   };
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post('https://ajay.yunicare.in/api/auth/logIn', {
+      email,
+      password
+    });
 
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
-      }
-    } catch (error) {
-      setMessage(error.response?.data?.message || "Login failed. Please try again.");
-      toast.error("Login failed!");
+    if (res.status === 200) {
+      // Save the access token to localStorage
+      localStorage.setItem("accessToken", res.data.accessToken); // Note the `data` access here
+      toast.success("Login successful!");
+
+      setTimeout(() => {
+        navigate("/"); // Redirect to homepage after login
+      }, 2000);
     }
-  };
+  } catch (error) {
+    setMessage(error.response?.data?.message || "Login failed. Please try again.");
+    toast.error("Login failed!");
+  }
+};
 
   return (
     <>

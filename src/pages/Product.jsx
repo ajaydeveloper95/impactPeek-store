@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
 
 import { Footer, Navbar } from "../components";
+import toast from "react-hot-toast";
 
 const Product = () => {
   const { id } = useParams();
@@ -18,6 +19,7 @@ const Product = () => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       dispatch(addCart(product));
+      toast.success("Added to cart");
     } else {
       navigate("/login");
     }
@@ -39,7 +41,7 @@ const Product = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/product/getproduct/${id}`
+          `https://ajay.yunicare.in/api/product/getproduct/${id}`
         );
         const data = await response.json();
 

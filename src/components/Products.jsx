@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -14,18 +14,25 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  
   const addProduct = (product) => {
-    dispatch(addCart(product));
-    toast.success("Added to cart");
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      dispatch(addCart(product));
+      toast.success("Added to cart");
+    } else {
+      navigate("/login");
+    }
   };
+  
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/product/getproducts"
+          "https://ajay.yunicare.in/api/product/getproducts"
         );
         if (response.status === 200) {
           // Exclude Men's and Kids' Clothing categories
