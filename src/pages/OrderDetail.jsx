@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Container, Row, Col, Badge, Spinner } from "react-bootstrap";
 import axios from "axios";
+import { Footer, Navbar } from "../components";
 
 const OrderDetail = () => {
   const [orders, setOrders] = useState([]);
@@ -47,7 +48,9 @@ const OrderDetail = () => {
   }
 
   return (
-    <Container className="mt-4">
+    <>
+    <Navbar/>
+    <Container className="mt-4 pt-4">
       <h1 className="text-center mb-4">Order Details</h1>
       {error && <p className="text-center text-danger">{error}</p>}
       {orders.length === 0 ? (
@@ -119,6 +122,8 @@ const OrderDetail = () => {
         ))
       )}
     </Container>
+    <Footer/>
+    </>
   );
 };
 
