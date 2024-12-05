@@ -6,7 +6,7 @@ const OrderDetail = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const apiEndpoint = "https://ajay.yunicare.in/api/order/orders"; // Your API endpoint
+  const apiEndpoint = "https://ajay.yunicare.in/api/order/orders";
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -37,7 +37,10 @@ const OrderDetail = () => {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
         <Spinner animation="border" variant="primary" />
       </div>
     );
@@ -62,18 +65,28 @@ const OrderDetail = () => {
             </Card.Header>
             <Card.Body>
               <Row>
-                {order.products.map((item) => (
-                  <Col md={3} key={item._id}>
-                    <img
-                      src={item.product.image}
-                      alt={item.product.productName}
-                      className="img-fluid rounded mb-3"
-                    />
-                  </Col>
-                ))}
+                {order.products.map((item, index) => {
+                  const product = item.product;
+                  const imageUrl =
+                    product && product.image
+                      ? product.image
+                      : "/path/to/placeholder-image.jpg";
+
+                  return (
+                    <Col md={3} key={index}>
+                      <img
+                        src={imageUrl}
+                        alt={product ? product.productName : "Unavailable"}
+                        className="img-fluid rounded mb-3"
+                      />
+                    </Col>
+                  );
+                })}
                 <Col>
                   <h5>
-                    {order.products[0].product.productName}{" "}
+                    {order.products[0].product
+                      ? order.products[0].product.productName
+                      : "Product unavailable"}{" "}
                     {order.products.length > 1 && (
                       <small>(+{order.products.length - 1} more)</small>
                     )}
@@ -83,10 +96,18 @@ const OrderDetail = () => {
                   </p>
                   <p>
                     <strong>Shipping Address:</strong>{" "}
-                    {order.shippingAddress ? JSON.parse(order.shippingAddress).name : "N/A"}
+                    {(() => {
+                      try {
+                        const address = JSON.parse(order.shippingAddress);
+                        return address.name || "N/A";
+                      } catch {
+                        return "Invalid Address Format";
+                      }
+                    })()}
                   </p>
                   <p>
-                    <strong>Payment Method:</strong> {order.paymentMethod}
+                    <strong>Payment Method:</strong>{" "}
+                    {order.paymentMethod || "N/A"}
                   </p>
                   <p>
                     <strong>Total Amount:</strong> ₹{order.totalAmount}
