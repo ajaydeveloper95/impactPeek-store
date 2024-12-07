@@ -8,9 +8,8 @@ const AboutPage = () => {
         <h1 className="text-center">About Us</h1>
         <hr />
         <p className="lead text-center">
-          Welcome to Pulsesynccart.in—your one-stop e-commerce destination for
-          high-quality products across various categories, including
-          electronics, fashion, and home essentials. Our mission is to provide
+          Welcome to Impactstore.in—your one-stop e-commerce destination for
+          high-quality products across various categories for Women Clothing . Our mission is to provide
           our customers with an exceptional shopping experience by offering a
           diverse range of products at competitive prices. Whether you’re a tech
           enthusiast looking for the latest gadgets or a fashion lover seeking

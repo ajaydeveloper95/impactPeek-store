@@ -9,7 +9,7 @@ const Checkout = () => {
   const [paymentUrl, setPaymentUrl] = useState(""); // State to store payment URL
   const [loading, setLoading] = useState(false); // State to handle loading state during payment URL fetch
   const [amount, setAmount] = useState(0);
-
+  const token = localStorage.getItem("accessToken");
   const EmptyCart = () => {
     return (
       <div className="container">
@@ -45,36 +45,86 @@ const Checkout = () => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-
-      // Generate txnid using timestamp
-      const txnid = `tgD59N${Date.now()}`;
-
-      // Validate form data
-      if (!data?.firstName || !data?.lastName || !data?.mobileNumber) {
-        alert("Please fill out all required fields.");
+  
+      // Validate form
+      if (
+        !data.firstName ||
+        !data.lastName ||
+        !data.email ||
+        !data.mobileNumber ||
+        !data.address
+      ) {
+        alert("Please fill in all required fields.");
         return;
       }
-
-      setLoading(true); // Set loading to true while the request is being made
-
-      // calling the Api Qr
-      let postReqURl = "https://payment.yunicare.in/payment/ImpactStoreGeneratePayment";
-      let postData = {
-        trxId: txnid,
-        amount: String(amount),
-        redirectUrl: "http://impactstore.in/cart"
+  
+      const shippingAddress = {
+        address: data.address,
+        country: data.country,
+        state: data.state,
       };
-
+  
+      const customer = {
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        phone: data.mobileNumber,
+      };
+  
+      const products = state.map((item) => ({
+        product: item.id, // Replace with your product ID field
+        quantity: item.qty,
+      }));
+  
+      const orderPayload = { customer, products, shippingAddress };
+  
+      setLoading(true);
+  
       try {
-        const response = await axios.post(postReqURl, postData);
-        const url = response?.data?.data?.data?.payment_url;
-        setPaymentUrl(url); // Set the payment URL
-      } catch (err) {
+        // Step 1: Create Order
+        const orderResponse = await axios.post(
+          "https://ajay.yunicare.in/api/order/orders",
+          orderPayload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Ensure you have `token` defined and valid
+            },
+          }
+        );
+  
+        if (orderResponse.status === 201) {
+          const orderId = orderResponse.data.order._id;
+          const totalAmount = orderResponse.data.order.totalAmount;
+  
+          // Step 2: Generate Payment URL
+          const txnid = `tgD59N${Date.now()}`;
+          const paymentPayload = {
+            trxId: txnid,
+            amount: String(totalAmount),
+            redirectUrl: "http://impactstore.in/cart", // Update with your redirect URL
+          };
+  
+          const paymentResponse = await axios.post(
+            "https://payment.yunicare.in/payment/ImpactStoreGeneratePayment",
+            paymentPayload
+          );
+  
+          const url = paymentResponse?.data?.data?.data?.payment_url;
+          if (url) {
+            setPaymentUrl(url);
+          } else {
+            alert("Failed to generate payment URL.");
+          }
+        } else {
+          alert("Failed to create order. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error during order/payment processing:", error);
+        alert("An error occurred. Please try again.");
       } finally {
-        setLoading(false); // Set loading to false once the request is completed
+        setLoading(false);
       }
     };
-
+  
     // Redirect to payment URL when it's set
     React.useEffect(() => {
       if (paymentUrl) {
