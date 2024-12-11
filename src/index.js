@@ -23,6 +23,7 @@ import {
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
 import OrderDetail from "./pages/OrderDetail";
+import Invoice from "./pages/Invoice";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -40,6 +41,7 @@ root.render(
           <Route path="/register" element={<Register />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orderdetail" element={<OrderDetail />} />
+          <Route path="/invoice/:orderId" element={<Invoice />} />
           <Route path="*" element={<PageNotFound />} />
           <Route path="/product/*" element={<PageNotFound />} />
         </Routes>

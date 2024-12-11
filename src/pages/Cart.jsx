@@ -1,3 +1,4 @@
+// Cart.js
 import React from "react";
 import { Footer, Navbar } from "../components";
 import { useSelector, useDispatch } from "react-redux";
@@ -5,7 +6,7 @@ import { addCart, delCart } from "../redux/action";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const state = useSelector((state) => state.handleCart);
+  const state = useSelector((state) => state.handleCart);  // Accessing cart data from Redux store
   const dispatch = useDispatch();
 
   const EmptyCart = () => {
@@ -24,11 +25,11 @@ const Cart = () => {
   };
 
   const addItem = (product) => {
-    dispatch(addCart(product));
+    dispatch(addCart(product));  // Dispatch action to add item to cart
   };
 
   const removeItem = (product) => {
-    dispatch(delCart(product));
+    dispatch(delCart(product));  // Dispatch action to remove item from cart
   };
 
   const ShowCart = () => {
@@ -37,8 +38,8 @@ const Cart = () => {
     let totalItems = 0;
 
     state.forEach((item) => {
-      subtotal += item.price * item.qty;
-      totalItems += item.qty;
+      subtotal += item.price * item.qty;  // Calculate subtotal
+      totalItems += item.qty;  // Calculate total items in cart
     });
 
     return (
@@ -145,6 +146,7 @@ const Cart = () => {
 
                     <Link
                       to="/checkout"
+                      state={{ cartItems: state }}  // Passing cart items to Checkout page via state
                       className="btn btn-dark btn-lg btn-block"
                     >
                       Go to checkout
