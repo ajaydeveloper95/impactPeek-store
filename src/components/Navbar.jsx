@@ -1,48 +1,53 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
+
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { apiPost } from '../api/apiMethods';
 
 const Navbar = () => {
     const state = useSelector(state => state.handleCart);
     const navigate = useNavigate();
-
     const handleLogout = async () => {
         try {
-            const token = localStorage.getItem('accessToken'); // Retrieve the token
-            await axios.post('https://ajay.yunicare.in/api/auth/logOut', {
-                headers: {
-                    Authorization: `Bearer ${token}` // Include token in the headers
-                }
-            });
-
-            // Clear tokens from local storage
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-
-            // Show success message via snackbar
-            toast.success("Logout successfully", {
-                position: "top-right", // Position for snackbar popup
-                autoClose: 3000, // Auto close after 3 seconds
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-
-            // Navigate to the login page after a slight delay to let the message show
-            setTimeout(() => {
-                navigate('/login');
-            }, 3000);
-
+          // Call the logout API
+          await apiPost("api/auth/logOut");
+      
+          // Clear the token from localStorage
+          localStorage.removeItem("accessToken");
+      
+          // Show a success toast message
+          toast.success("Logged out successfully!", {
+            position: "top-right",
+            autoClose: 3000, // Auto close after 3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+      
+          // Redirect to the login page after 3 seconds
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
         } catch (error) {
-            console.error("Logout failed:", error);
-            toast.error("Logout failed, please try again");
+          // Log the error and show an error toast
+          console.error("Logout failed:", error);
+          toast.error("Logout failed, please try again", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
-    };
+      };
+
+    
 
     // Check if the user is logged in
     const isLoggedIn = !!localStorage.getItem('accessToken');

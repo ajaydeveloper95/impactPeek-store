@@ -108,7 +108,7 @@ const Cart = () => {
 
                             <p className="text-start text-md-center">
                               <strong>
-                                <span className="text-muted">{item.qty}</span> x {item.price}/-
+                                <span className="text-muted">{item.qty}</span> x {Math.round(item.price* 0.75)}/-
                               </strong>
                             </p>
                           </div>

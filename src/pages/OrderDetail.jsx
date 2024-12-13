@@ -8,9 +8,10 @@ import {
   Spinner,
   Button,
 } from "react-bootstrap";
-import axios from "axios";
+
 import { Footer, Navbar } from "../components";
 import { useNavigate } from "react-router-dom";
+import { apiGet } from "../api/apiMethods";
 
 const OrderDetail = () => {
   const [orders, setOrders] = useState([]);
@@ -18,7 +19,7 @@ const OrderDetail = () => {
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const apiEndpoint = "https://ajay.yunicare.in/api/order/orders";
+  const apiEndpoint = "api/order/orders";
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
@@ -27,15 +28,13 @@ const OrderDetail = () => {
       if (!token) {
         setError("No access token found. Please log in.");
         setLoading(false);
+        alert("No Orders found Please Login")
+        navigate("/login")
         return;
       }
 
       try {
-        const response = await axios.get(apiEndpoint, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await apiGet(apiEndpoint);
         setOrders(response.data.orders);
         setFilteredOrders(response.data.orders); // Initialize filteredOrders
       } catch (error) {

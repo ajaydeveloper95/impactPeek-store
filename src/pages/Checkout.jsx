@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Footer, Navbar } from "../components";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { apiPost } from "../api/apiMethods";
 
 const Checkout = () => {
   const [formData, setFormData] = useState({
@@ -68,15 +69,7 @@ const Checkout = () => {
 
     try {
       // First, place the order
-      const orderResponse = await axios.post(
-        "https://ajay.yunicare.in/api/order/orders",
-        orderData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
+      const orderResponse = await apiPost("api/order/orders",orderData);
 
       // If order is successful, proceed with payment
       let postReqURl = "https://payment.yunicare.in/payment/ImpactStoreGeneratePayment";

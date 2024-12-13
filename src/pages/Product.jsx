@@ -102,12 +102,13 @@ const Product = () => {
             />
           )}
         </div>
-  
+
         {/* Product Details */}
         <div className="col-md-6 col-sm-12 py-5">
           <h4 className="text-uppercase text-muted">{product.category}</h4>
           <h1 className="display-5">{product.productName}</h1>
-          <h3 className="display-6 my-4">Rs.{product.price}</h3>
+          <h3 className="display-6 my-4">Rs. {Math.round(product.price * 0.75)} (25% off)</h3>
+          <h4 className="display-6 my-4" style={{textDecoration: "line-through",}}>Rs. {product.price}</h4>
           <p className="lead">{product.description}</p>
           <button
             className="btn btn-outline-dark"

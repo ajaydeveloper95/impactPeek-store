@@ -152,18 +152,56 @@ const Products = () => {
                   {product.description.substring(0, 90)}...
                 </p>
               </div>
-              <ul className="list-group list-group-flush">
-                <li
-                  className=""
-                  style={{
-                    fontSize: "1rem",
-                    color: "#f15b2a",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Rs. {product.price}
-                </li>
-              </ul>
+              {/* <ul className="list-group list-group-flush">
+  <li
+    className=""
+    style={{
+      fontSize: "1rem",
+      color: "#f15b2a",
+      fontWeight: "bold",
+    }}
+  >
+    Rs. {product.price}
+  </li>
+  <li
+    className="text-muted"
+    style={{
+      fontSize: "0.9rem",
+      color: "#999",
+      textDecoration: "line-through",
+    }}
+  >
+    <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
+      Rs. {Math.round(product.price * 0.75)}
+    </span> (25% off)
+  </li>
+</ul> */}
+<ul className="list-group list-group-flush">
+  <li
+    className=""
+    style={{
+      fontSize: "1rem",
+      color: "#f15b2a",
+      fontWeight: "bold",
+    }}
+  >
+    Rs. {Math.round(product.price * 0.75)} (25% off){/* Display discounted price */}
+  </li>
+  <li
+    className="text-muted"
+    style={{
+      fontSize: "0.9rem",
+      color: "#999",
+      textDecoration: "line-through",
+    }}
+  >
+    <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
+      Rs. {(product.price )}
+    </span> 
+  </li>
+</ul>
+
+
               <div className="card-body">
                 <Link
                   to={`/getproduct/${product._id}`}

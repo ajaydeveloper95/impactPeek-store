@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Spinner, Alert } from "react-bootstrap";
-import axios from "axios";
+
 import jsPDF from "jspdf";
+import { apiGet } from "../api/apiMethods";
 
 const Invoice = () => {
   const { orderId } = useParams();
@@ -11,7 +12,7 @@ const Invoice = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const apiEndpoint = `https://ajay.yunicare.in/api/order/orders/${orderId}`;
+  const apiEndpoint = `api/order/orders/${orderId}`;
 
   const handleDownload = () => {
     const doc = new jsPDF({
@@ -39,6 +40,7 @@ const Invoice = () => {
       },
       x: x, // Center horizontally
       y: y, // Center vertically
+      
       width: contentWidth, // Width of the content
       windowWidth: 800, // This is the window width to capture the content from the DOM
     });
@@ -54,9 +56,7 @@ const Invoice = () => {
           return;
         }
 
-        const response = await axios.get(apiEndpoint, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await apiGet(apiEndpoint);
         setOrder(response.data.order);
       } catch (error) {
         setError("Error fetching order details. Please try again.");
@@ -176,7 +176,7 @@ const Invoice = () => {
                   <td style={{ border: "1px solid #000", padding: "8px" }}>{item.product.productName}</td>
                   <td style={{ border: "1px solid #000", padding: "8px", textAlign: "center" }}>{item.quantity || 1}</td>
                   <td style={{ border: "1px solid #000", padding: "8px", textAlign: "center" }}>{item._id}</td>
-                  <td style={{ border: "1px solid #000", padding: "8px", textAlign: "right" }}>₹{item.product.price || order.totalAmount}</td>
+                  <td style={{ border: "1px solid #000", padding: "8px", textAlign: "right" }}>Rs. {item.product.price || order.totalAmount}</td>
                 </tr>
               ))}
             </tbody>
@@ -188,7 +188,7 @@ const Invoice = () => {
                 <td style={{ border: "1px solid #000", padding: "8px", textAlign: "right" }} colSpan="3">
                   <strong>Total:</strong>
                 </td>
-                <td style={{ border: "1px solid #000", padding: "8px", textAlign: "right" }}>₹{order.totalAmount}</td>
+                <td style={{ border: "1px solid #000", padding: "8px", textAlign: "right" }}>Rs. {order.totalAmount}</td>
               </tr>
             </tbody>
           </table>
