@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Footer, Navbar } from '../components';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
-import axios from 'axios';
+
+import { apiPost } from '../api/apiMethods';
 
 const Register = () => {
   const navigate = useNavigate(); // Initialize useNavigate
@@ -30,7 +31,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://ajay.yunicare.in/api/auth/signUp', formData);
+      const res = await apiPost('api/auth/signUp', formData);
       setMessage('User registered successfully');
       setTimeout(() => navigate('/login'), 2000); // Navigate to /login after 2 seconds
     } catch (error) {

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Footer, Navbar } from "../components";
-import axios from "axios";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { apiPost } from "../api/apiMethods";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,40 +13,43 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); 
 
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const res = await axios.post('http://localhost:5067/api/auth/logIn', {
-//         email,
-//         password
-//       });
-// console.log(res.data.accessToken)
-//       if (res.status === 200) {
-//         localStorage.setItem("accessToken", res.accessToken);
-//         // localStorage.setItem("refreshToken", res.data.refreshToken);
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     // Use apiPost method instead of axios directly
+  //     const res = await apiPost('api/auth/logIn', {
+  //       email,
+  //       password
+  //     });
 
-//         toast.success("Login successful!");
+  //     if (res.data.statusCode === 200) {
+  //       localStorage.setItem("accessToken", res.data.data.accessToken);
+  //       localStorage.setItem("refreshToken", res.data.data.refreshToken);
 
-//         setTimeout(() => {
-//           navigate("/");
-//         }, 2000);
-//       }
-//     } catch (error) {
-//       setMessage(error.response?.data?.message || "Login failed. Please try again.");
-//       toast.error("Login failed!");
-//     }
-//   };
+  //       toast.success("Login successful!");
+
+  //       setTimeout(() => {
+  //         navigate("/");
+  //       }, 2000);
+  //     }
+  //   } catch (error) {
+  //     setMessage(error.response?.data?.message || "Login failed. Please try again.");
+  //     toast.error("Login failed!");
+  //   }
+  // };
+
 const handleLogin = async (e) => {
   e.preventDefault();
   try {
-    const res = await axios.post('https://ajay.yunicare.in/api/auth/logIn', {
+    const res = await apiPost('api/auth/logIn', {
       email,
       password
     });
 
     if (res.status === 200) {
       // Save the access token to localStorage
-      localStorage.setItem("accessToken", res.data.accessToken); // Note the `data` access here
+      localStorage.setItem("accessToken", res.data.accessToken); 
+      // localStorage.setItem("refreshToken", res.data.data.refreshToken);
       toast.success("Login successful!");
 
       setTimeout(() => {
