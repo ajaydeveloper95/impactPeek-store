@@ -6,6 +6,11 @@ import { addCart } from "../redux/action";
 
 import { Footer, Navbar } from "../components";
 import toast from "react-hot-toast";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 const Product = () => {
   const { id } = useParams();
@@ -85,23 +90,31 @@ const Product = () => {
       <div className="row">
         {/* Product Images */}
         <div className="col-md-6 col-sm-12 py-3">
-          {product.images && product.images.length > 0 ? (
-            <img
-              className="img-fluid"
-              src={product.images[0]} // Display the first image from the array
-              alt={product.productName}
-              width="400px"
-              height="400px"
-            />
-          ) : (
-            <img
-              className="img-fluid"
-              src="/path/to/placeholder-image.jpg" // Fallback if no images are available
-              alt="No image available"
-              width="400px"
-              height="400px"
-            />
-          )}
+        <Swiper
+                modules={[Navigation, Pagination, Autoplay]} // Pass modules here
+                navigation
+                pagination={{ clickable: true }}
+                autoplay={{ disableOnInteraction: false }}
+                spaceBetween={20}
+                slidesPerView={1}
+                loop={true}
+                style={{ width: "100%", height: "300px" }}
+              >
+                {product?.images?.map((imgSrc, index) => (
+                  <SwiperSlide key={index}>
+                    <img
+                      src={imgSrc}
+                      alt={`${product.productName}-${index}`}
+                      style={{
+                        objectFit: "contain",
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
         </div>
 
         {/* Product Details */}

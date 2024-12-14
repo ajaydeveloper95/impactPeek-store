@@ -144,7 +144,7 @@ const Products = () => {
                 loop={true}
                 style={{ width: "100%", height: "300px" }}
               >
-                {product.images.map((imgSrc, index) => (
+                {product?.images?.map((imgSrc, index) => (
                   <SwiperSlide key={index}>
                     <img
                       src={imgSrc}
