@@ -14,6 +14,7 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 15;
+  const [selectedSize, setSelectedSize] = useState("M");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -122,7 +123,7 @@ const Products = () => {
                 alt={product.productName}
                 height={300}
                 style={{
-                  objectFit: "cover",
+                  objectFit: "contain",
                   borderRadius: "8px",
                   transition: "transform 0.3s ease",
                 }}
@@ -152,6 +153,25 @@ const Products = () => {
                   {product.description.substring(0, 90)}...
                 </p>
               </div>
+
+              <div className="mb-3" style={{display:"flex",justifyContent:"space-around"}}>
+                <label htmlFor="size" className="form-label">Select Size</label>
+                <select
+                  id="size"
+                  // className="form-select"
+                  value={selectedSize}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                >
+                  {/* Displaying fixed size options */}
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
+              </div>
+
+
               {/* <ul className="list-group list-group-flush">
   <li
     className=""
@@ -176,30 +196,30 @@ const Products = () => {
     </span> (25% off)
   </li>
 </ul> */}
-<ul className="list-group list-group-flush">
-  <li
-    className=""
-    style={{
-      fontSize: "1rem",
-      color: "#f15b2a",
-      fontWeight: "bold",
-    }}
-  >
-    Rs. {Math.round(product.price * 0.75)} (25% off){/* Display discounted price */}
-  </li>
-  <li
-    className="text-muted"
-    style={{
-      fontSize: "0.9rem",
-      color: "#999",
-      textDecoration: "line-through",
-    }}
-  >
-    <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-      Rs. {(product.price )}
-    </span> 
-  </li>
-</ul>
+              <ul className="list-group list-group-flush">
+                <li
+                  className=""
+                  style={{
+                    fontSize: "1rem",
+                    color: "#f15b2a",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Rs. {Math.round(product.price * 0.75)} (25% off){/* Display discounted price */}
+                </li>
+                <li
+                  className="text-muted"
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "#999",
+                    textDecoration: "line-through",
+                  }}
+                >
+                  <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                    Rs. {(product.price)}
+                  </span>
+                </li>
+              </ul>
 
 
               <div className="card-body">

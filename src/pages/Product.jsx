@@ -11,6 +11,7 @@ const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
+  const [selectedSize, setSelectedSize] = useState("M");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -107,9 +108,28 @@ const Product = () => {
         <div className="col-md-6 col-sm-12 py-5">
           <h4 className="text-uppercase text-muted">{product.category}</h4>
           <h1 className="display-5">{product.productName}</h1>
-          <h3 className="display-6 my-4">Rs. {Math.round(product.price * 0.75)} (25% off)</h3>
-          <h4 className="display-6 my-4" style={{textDecoration: "line-through",}}>Rs. {product.price}</h4>
+          <h3 className="display-7 my-4">Rs. {Math.round(product.price * 0.75)} (25% off)</h3>
+          <h4 className="display-7 my-4" style={{ textDecoration: "line-through", }}>Rs. {product.price}</h4>
           <p className="lead">{product.description}</p>
+
+          <div className="mb-3" style={{display:"flex",justifyContent:"space-between",marginRight:"0px",width:"25%"}}>
+                <label htmlFor="size" className="form-label">Select Size</label>
+                <select
+                  id="size"
+                  // className="form-select"
+                  value={selectedSize}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                >
+                  {/* Displaying fixed size options */}
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
+              </div>
+
+
           <button
             className="btn btn-outline-dark"
             onClick={() => addProduct(product)}
@@ -126,7 +146,7 @@ const Product = () => {
       </div>
     </div>
   );
-  
+
 
   return (
     <>
