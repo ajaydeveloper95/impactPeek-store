@@ -6,6 +6,11 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -14,6 +19,7 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 15;
+  const [selectedSize, setSelectedSize] = useState("M");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -112,21 +118,49 @@ const Products = () => {
               style={{
                 borderRadius: "12px",
                 boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-                overflow: "hidden",
+                // overflow: "hidden",
                 transition: "transform 0.3s ease",
               }}
             >
-              <img
+              {/* <img
                 className="card-img-top p-3"
                 src={product.images?.[0] || product.image}
                 alt={product.productName}
                 height={300}
                 style={{
-                  objectFit: "cover",
+                  objectFit: "contain",
                   borderRadius: "8px",
                   transition: "transform 0.3s ease",
                 }}
-              />
+              /> */}
+
+              <Swiper
+                modules={[Navigation, Pagination, Autoplay]} // Pass modules here
+                navigation
+                pagination={{ clickable: true }}
+                autoplay={{ disableOnInteraction: false }}
+                spaceBetween={20}
+                slidesPerView={1}
+                loop={true}
+                style={{ width: "100%", height: "300px" }}
+              >
+                {product.images.map((imgSrc, index) => (
+                  <SwiperSlide key={index}>
+                    <img
+                      src={imgSrc}
+                      alt={`${product.productName}-${index}`}
+                      style={{
+                        objectFit: "contain",
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+
               <div
                 className="card-body"
                 style={{ padding: "20px", textAlign: "center" }}
@@ -152,6 +186,25 @@ const Products = () => {
                   {product.description.substring(0, 90)}...
                 </p>
               </div>
+
+              <div className="mb-3" style={{ display: "flex", justifyContent: "space-around" }}>
+                <label htmlFor="size" className="form-label">Select Size</label>
+                <select
+                  id="size"
+                  // className="form-select"
+                  value={selectedSize}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                >
+                  {/* Displaying fixed size options */}
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
+              </div>
+
+
               {/* <ul className="list-group list-group-flush">
   <li
     className=""
@@ -176,30 +229,30 @@ const Products = () => {
     </span> (25% off)
   </li>
 </ul> */}
-<ul className="list-group list-group-flush">
-  <li
-    className=""
-    style={{
-      fontSize: "1rem",
-      color: "#f15b2a",
-      fontWeight: "bold",
-    }}
-  >
-    Rs. {Math.round(product.price * 0.75)} (25% off){/* Display discounted price */}
-  </li>
-  <li
-    className="text-muted"
-    style={{
-      fontSize: "0.9rem",
-      color: "#999",
-      textDecoration: "line-through",
-    }}
-  >
-    <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-      Rs. {(product.price )}
-    </span> 
-  </li>
-</ul>
+              <ul className="list-group list-group-flush">
+                <li
+                  className=""
+                  style={{
+                    fontSize: "1rem",
+                    color: "#f15b2a",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Rs. {Math.round(product.price * 0.75)} (25% off){/* Display discounted price */}
+                </li>
+                <li
+                  className="text-muted"
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "#999",
+                    textDecoration: "line-through",
+                  }}
+                >
+                  <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                    Rs. {(product.price)}
+                  </span>
+                </li>
+              </ul>
 
 
               <div className="card-body">
