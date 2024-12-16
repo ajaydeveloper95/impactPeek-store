@@ -108,7 +108,7 @@ const Products = () => {
 
     return (
       <div className="row justify-content-center">
-        {currentProducts.map((product) => (
+        {currentProducts.map((product, index) => (
           <div
             key={product._id}
             className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4"
@@ -229,8 +229,8 @@ const Products = () => {
     </span> (25% off)
   </li>
 </ul> */}
-              <ul className="list-group list-group-flush">
-                <li
+              <div className="list-group list-group-flush">
+                <span
                   className=""
                   style={{
                     fontSize: "1rem",
@@ -238,9 +238,13 @@ const Products = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  Rs. {Math.round(product.price * 0.75)} (25% off){/* Display discounted price */}
-                </li>
-                <li
+
+                  Rs. {product.actualPrice === 0 ? product.price : product.actualPrice}
+                  {product.actualPrice !== 0 && (
+                    ` (${Math.floor(((product.price - product.actualPrice) / product.price) * 100)}%)`
+                  )}                
+                </span>
+                <span
                   className="text-muted"
                   style={{
                     fontSize: "0.9rem",
@@ -251,8 +255,8 @@ const Products = () => {
                   <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
                     Rs. {(product.price)}
                   </span>
-                </li>
-              </ul>
+                </span>
+              </div>
 
 
               <div className="card-body">
