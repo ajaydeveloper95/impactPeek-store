@@ -94,7 +94,7 @@ const Product = () => {
                 modules={[Navigation, Pagination, Autoplay]} // Pass modules here
                 navigation
                 pagination={{ clickable: true }}
-                autoplay={{ disableOnInteraction: false }}
+                // autoplay={{ disableOnInteraction: false }}
                 spaceBetween={20}
                 slidesPerView={1}
                 loop={true}
