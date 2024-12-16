@@ -138,13 +138,13 @@ const Products = () => {
                 modules={[Navigation, Pagination, Autoplay]} // Pass modules here
                 navigation
                 pagination={{ clickable: true }}
-                autoplay={{ disableOnInteraction: false }}
+                // autoplay={{ disableOnInteraction: false }}
                 spaceBetween={20}
                 slidesPerView={1}
                 loop={true}
                 style={{ width: "100%", height: "300px" }}
               >
-                {product.images.map((imgSrc, index) => (
+                {product?.images?.map((imgSrc, index) => (
                   <SwiperSlide key={index}>
                     <img
                       src={imgSrc}
